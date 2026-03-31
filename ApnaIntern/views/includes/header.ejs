@@ -1,0 +1,55 @@
+<nav class="redesign-nav">
+  <a href="/" class="logo">Apna<span>Intern</span> <span class="logo-dot"></span></a>
+  
+  <ul class="nav-links">
+    <% if(currUser && currUser.usertype==="student"){%>
+      <li><a href="/student">Home</a></li>
+      <li><a href="/student/internship">Internships</a></li>
+      <li><a href="/student/job">Jobs</a></li>
+      <li><a href="/student/myapplication">Applications</a></li>
+    <%} else if(currUser && currUser.usertype==="company"){%>
+      <li><a href="/company">Home</a></li>
+      <li><a href="/company/internship">Internships</a></li>
+      <li><a href="/company/job">Jobs</a></li>
+      <li><a href="/company/internship/new">Create</a></li>
+    <%} else {%>
+      <li><a href="#jobs">Internships</a></li>
+      <li><a href="#jobs">Jobs</a></li>
+      <li><a href="#companies">Companies</a></li>
+      <li><a href="#categories">Categories</a></li>
+      <li><a href="#how">How It Works</a></li>
+    <%}%>
+  </ul>
+
+  <div class="nav-actions">
+    <% if(!currUser){ %>
+      <a href="/login" class="btn-redesign btn-ghost-redesign">Log In</a>
+      <a href="/signup" class="btn-redesign btn-primary-redesign"><i class="fas fa-user-plus"></i> Sign Up Free</a>
+    <% } else { %>
+      <a href="/logout" class="btn-redesign btn-primary-redesign">Logout</a>
+    <% } %>
+    <div class="hamburger-redesign" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu-redesign" id="mobileMenu">
+  <span class="mobile-close" onclick="toggleMenu()">✕</span>
+  <% if(currUser && currUser.usertype==="student"){%>
+    <a href="/student" onclick="toggleMenu()">Home</a>
+    <a href="/student/internship" onclick="toggleMenu()">Internships</a>
+    <a href="/student/job" onclick="toggleMenu()">Jobs</a>
+  <%} else if(currUser && currUser.usertype==="company"){%>
+    <a href="/company" onclick="toggleMenu()">Home</a>
+    <a href="/company/internship" onclick="toggleMenu()">Internships</a>
+    <a href="/company/job" onclick="toggleMenu()">Jobs</a>
+  <%} else {%>
+    <a href="#jobs" onclick="toggleMenu()">Internships</a>
+    <a href="#jobs" onclick="toggleMenu()">Jobs</a>
+    <a href="#companies" onclick="toggleMenu()">Companies</a>
+    <a href="#how" onclick="toggleMenu()">How It Works</a>
+    <a href="/signup" class="btn-redesign btn-primary-redesign btn-large" onclick="toggleMenu()">Get Started Free</a>
+  <%}%>
+</div>

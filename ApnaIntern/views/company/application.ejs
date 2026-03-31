@@ -1,0 +1,20 @@
+<%- layout("/layouts/boilerplate")%>
+<body>
+    <div class="row">
+        <%for(let i=0;i<application.length;i++){%>
+            <div class="col-6 offset-3 mt-4">
+                <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><%=applieds[i].username %></h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary"><%=applieds[i].email %></h6>
+                    <p class="card-text"><%= application[i].Status %></p>
+                    <p class="card-text"><%= application[i].appliedAt.toDateString(); %></p>
+                    <form method="post" action="/company/application/<%= application[i].id %>">
+                        <button class="btn btn-link" style="text-decoration: none;padding: 0px;">Accept</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+        <%}%>
+    </div>
+</body>
