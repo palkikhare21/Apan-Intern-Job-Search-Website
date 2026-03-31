@@ -53,10 +53,10 @@ const user_route=require("./routes/user.js");
 
 
 async function main(){
-    await mongoose.connect("mongodb://127.0.0.1:27017/apnaintern");
+    const dbUrl = process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/apnaintern";
+    await mongoose.connect(dbUrl);
 }
 main().then((res)=>{
-    console.log(res);
     console.log("connected to DB");
 }).catch((err)=>{
     console.log(err);
@@ -102,7 +102,10 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render("error.ejs",{message});
 });
 
+
 app.listen(8080,(req,res)=>{
     console.log("listening..............");
 
 });
+
+module.exports = app;
