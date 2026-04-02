@@ -52,17 +52,17 @@ const user_route=require("./routes/user.js");
 
 
 
+// Disable Mongoose buffering to avoid the 10s timeout error on Vercel.
+// Queries will now fail immediately if the DB is not connected.
+mongoose.set('bufferCommands', false);
+
 async function main() {
     const dbUrl = process.env.STORAGE_URL || process.env.MONGODB_URI || process.env.ATLAS_URL;
     
-    if (!dbUrl) {
-        console.warn("No MONGODB_URI found! Falling back to local DB (may fail on Vercel)");
-    }
+    console.log("DB URL Found:", !!dbUrl); // Log if the URL arrives at the server
 
     try {
-        await mongoose.connect(dbUrl || "mongodb://127.0.0.1:27017/apnaintern", {
-            serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
-        });
+        await mongoose.connect(dbUrl || "mongodb://127.0.0.1:27017/apnaintern");
         console.log("Connected to MongoDB successfully");
     } catch (err) {
         console.error("Critical MongoDB connection error:", err);
@@ -84,10 +84,20 @@ app.use((req,res,next)=>{
 });
 
 
-app.get("/",async(req,res)=>{
-    const internships=await Internship.find({});
-    const jobs=await Job.find({});
-    res.render("home.ejs",{internships,jobs});
+app.get("/", async (req, res) => {
+    try {
+        // Only attempt to find if the connection is ready (state 1 is connected)
+        if (mongoose.connection.readyState !== 1) {
+            console.warn("Attempting query while DB is not ready. State:", mongoose.connection.readyState);
+            return res.render("home.ejs", { internships: [], jobs: [] });
+        }
+        const internships = await Internship.find({}).limit(6);
+        const jobs = await Job.find({}).limit(6);
+        res.render("home.ejs", { internships, jobs });
+    } catch (err) {
+        console.error("Homepage load error:", err);
+        res.render("home.ejs", { internships: [], jobs: [] });
+    }
 });
 //student
 app.use("/student",student_route);

@@ -6,14 +6,12 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
-    {
-      "src": "/(main.css|redesign.css|redesign.js|style.css|assets/.*)",
-      "dest": "/public/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "index.js"
-    }
+  "rewrites": [
+    { "source": "/main.css", "destination": "/public/main.css" },
+    { "source": "/redesign.css", "destination": "/public/redesign.css" },
+    { "source": "/redesign.js", "destination": "/public/redesign.js" },
+    { "source": "/style.css", "destination": "/public/style.css" },
+    { "source": "/assets/(.*)", "destination": "/public/assets/$1" },
+    { "source": "/(.*)", "destination": "/index.js" }
   ]
 }
