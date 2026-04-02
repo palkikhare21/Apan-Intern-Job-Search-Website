@@ -53,7 +53,7 @@ const user_route=require("./routes/user.js");
 
 
 async function main() {
-    const dbUrl = process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/apnaintern";
+    const dbUrl = process.env.MONGODB_URI || process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/apnaintern";
     try {
         await mongoose.connect(dbUrl);
         console.log("Connected to MongoDB successfully");
