@@ -78,7 +78,7 @@ router.post("/application/:id",wrapAsync(async(req,res)=>{
 
 //signup
 router.get("/signup",optioncompany,(req,res)=>{
-    res.render("signup.ejs");
+    res.render("signup.ejs", { usertype: "company" });
 });
 
 router.get("/details",isLoggedIn,(req,res)=>{

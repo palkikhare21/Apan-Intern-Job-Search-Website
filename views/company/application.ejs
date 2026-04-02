@@ -1,20 +1,82 @@
-<%- layout("/layouts/boilerplate")%>
-<body>
-    <div class="row">
-        <%for(let i=0;i<application.length;i++){%>
-            <div class="col-6 offset-3 mt-4">
-                <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><%=applieds[i].username %></h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary"><%=applieds[i].email %></h6>
-                    <p class="card-text"><%= application[i].Status %></p>
-                    <p class="card-text"><%= application[i].appliedAt.toDateString(); %></p>
-                    <form method="post" action="/company/application/<%= application[i].id %>">
-                        <button class="btn btn-link" style="text-decoration: none;padding: 0px;">Accept</button>
-                    </form>
-                </div>
-                </div>
-            </div>
-        <%}%>
+<%- layout("/layouts/mainboilerplate.ejs") %>
+
+<div class="section-redesign">
+    <div class="section-header-redesign fade-in">
+        <div>
+            <div class="section-label-redesign">Candidate Review</div>
+            <h1 class="section-title-redesign">Hiring for <%= job ? job.title : "this position" %></h1>
+        </div>
+        <a href="/company" class="section-link-redesign"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
     </div>
-</body>
+
+    <div class="row fade-in">
+        <div class="col-12">
+            <div class="jobs-grid-redesign" style="grid-template-columns: 1fr; gap: 20px;">
+                <% if (application && application.length > 0) { %>
+                    <% for(let i=0; i < application.length ; i++){ %>
+                        <div class="job-card-redesign" style="padding: 32px; display: flex; justify-content: space-between; align-items: flex-start; cursor: default;">
+                            <div style="display: flex; gap: 20px;">
+                                <div class="company-avatar" style="background: var(--paper); color: var(--accent); border: 1px solid var(--border); width: 60px; height: 60px; font-size: 1.5rem;">
+                                    <%= applieds[i].username.charAt(0).toUpperCase() %>
+                                </div>
+                                <div>
+                                    <h3 class="job-title-redesign" style="font-size: 1.3rem; margin-bottom: 4px;"><%= applieds[i].username %></h3>
+                                    <div class="job-company" style="margin-bottom: 12px;"><i class="far fa-envelope"></i> <%= applieds[i].email %></div>
+                                    <div class="tag-row">
+                                        <span class="tag <%= application[i].Status === 'accepted' ? 'tag-green' : (application[i].Status === 'rejected' ? 'tag-orange' : 'tag-blue') %>">
+                                            Status: <%= application[i].Status %>
+                                        </span>
+                                        <span class="tag tag-blue"><i class="far fa-calendar-alt"></i> Applied: <%= application[i].appliedAt.toDateString() %></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 10px; align-items: flex-end;">
+                                <div style="display: flex; gap: 10px;">
+                                    <!-- Accept Button -->
+                                    <form method="POST" action="/company/application/<%= application[i].id %>?action=accepted" style="display: inline;">
+                                        <button class="btn-redesign btn-primary-redesign" style="padding: 10px 20px; font-size: 0.85rem;">
+                                            <i class="fas fa-check"></i> Shortlist
+                                        </button>
+                                    </form>
+
+                                    <!-- Hire Button -->
+                                    <form method="POST" action="/company/application/<%= application[i].id %>?action=hired" style="display: inline;">
+                                        <button class="btn-redesign btn-ghost-redesign" style="padding: 10px 20px; font-size: 0.85rem; border-color: var(--green); color: var(--green);">
+                                            <i class="fas fa-handshake"></i> Hire
+                                        </button>
+                                    </form>
+
+                                    <!-- Reject Button -->
+                                    <form method="POST" action="/company/application/<%= application[i].id %>?action=rejected" style="display: inline;">
+                                        <button class="btn-redesign btn-ghost-redesign" style="padding: 10px 20px; font-size: 0.85rem; border-color: #e74c3c; color: #e74c3c;">
+                                            <i class="fas fa-times"></i> Reject
+                                        </button>
+                                    </form>
+                                </div>
+                                <a href="/student/profile/<%= applieds[i].id %>" class="section-link-redesign" style="font-size: 0.85rem; margin-top: 8px;">View Full Profile <i class="fas fa-external-link-alt"></i></a>
+                            </div>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <div class="category-card" style="padding: 60px; text-align: center; border-style: dashed;">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">📂</div>
+                        <h3 class="section-title-redesign" style="font-size: 1.5rem;">No applications yet</h3>
+                        <p class="auth-header-redesign p" style="margin-bottom: 0;">Once students start applying for <%= job ? job.title : "this position" %>, they will appear here.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fades = document.querySelectorAll('.fade-in');
+        fades.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 100 * index);
+        });
+    });
+</script>

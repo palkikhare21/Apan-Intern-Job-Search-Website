@@ -8,9 +8,10 @@ const { saveredirectUrl } = require("../utils/middleware.js");
 
 router.post("/signup",wrapAsync(async(req,res,next)=>{
     try{
-        let usertype=req.session.usertype;
-        const {username,email,password}=req.body;
-        const newUser=new User({username,email,usertype});
+        const {username,email,password,usertype}=req.body;
+        // Backup: check session if usertype is not in body
+        const finalUserType = usertype || req.session.usertype;
+        const newUser=new User({username,email,usertype: finalUserType});
         let registerUser=await User.register(newUser,password);
         req.login(registerUser,(err)=>{
             if(err){

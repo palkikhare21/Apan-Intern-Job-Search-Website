@@ -1,0 +1,84 @@
+<%- layout("/layouts/mainboilerplate.ejs") %>
+
+<div class="auth-section" style="min-height: auto; padding: 100px 4%;">
+    <div class="auth-bg-gradient"></div>
+    
+    <div class="auth-container-redesign" style="max-width: 800px;">
+        <div class="auth-card-redesign fade-in" style="max-width: 100%; text-align: left; padding: 60px;">
+            <div class="auth-header-redesign">
+                <div class="hero-badge">✦ Complete Your Profile</div>
+                <h2 style="font-size: 2.5rem; margin-top: 12px;">Tell us about yourself</h2>
+                <p>Add your academic and professional details to get discovered by top employers on ApnaIntern.</p>
+            </div>
+
+            <form method="POST" action="/student/details" class="form-redesign" novalidate>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group-redesign">
+                            <label for="name">Full Name</label>
+                            <input id="name" name="list[name]" placeholder="Enter your full name" type="text" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-redesign">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="list[gender]" class="form-group-redesign input" style="width:100%; padding: 14px 20px; border-radius: 12px; border: 1.5px solid var(--border); background: rgba(0,0,0,0.01);">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group-redesign">
+                    <label for="college">College / University</label>
+                    <input id="college" name="list[college]" placeholder="Enter your college name" type="text" required>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group-redesign">
+                            <label for="course">Course</label>
+                            <input id="course" name="list[course]" placeholder="e.g. B.Tech, MCA" type="text" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-redesign">
+                            <label for="branch">Branch / Specialization</label>
+                            <input id="branch" name="list[branch]" placeholder="e.g. Computer Science" type="text" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group-redesign">
+                    <label for="skills">Skills (Comma separated)</label>
+                    <input id="skills" name="list[skills]" placeholder="Java, Python, React, UI/UX" type="text" required>
+                </div>
+
+                <div class="form-group-redesign">
+                    <label for="resumeUrl">Resume Link (Google Drive / Cloud Link)</label>
+                    <input id="resumeUrl" name="list[resumeUrl]" placeholder="https://drive.google.com/..." type="url" required>
+                    <small style="color: var(--muted); font-size: 0.8rem; display: block; margin-top: 8px;">
+                        <i class="fas fa-info-circle"></i> Make sure your link access is set to **"Anyone with the link"**.
+                    </small>
+                </div>
+
+                <button class="btn-redesign btn-primary-redesign" style="width:100%; justify-content:center; margin-top:30px; padding:16px; font-size: 1.1rem;">
+                    <i class="fas fa-save"></i> Save Profile & Continue
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fades = document.querySelectorAll('.fade-in');
+        fades.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 100 * index);
+        });
+    });
+</script>

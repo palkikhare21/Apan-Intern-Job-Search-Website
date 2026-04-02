@@ -1143,6 +1143,37 @@
     .cta-actions-redesign .btn-redesign { width: 100%; justify-content: center; }
   }
 
+  /* ALERTS & FLASH MESSAGES */
+  .alert-redesign {
+    border-radius: 12px;
+    padding: 16px 24px;
+    border: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+    animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .alert-success-redesign {
+    background: #e6f7ef;
+    color: #1a8754;
+    border-left: 4px solid #1a8754;
+  }
+
+  .alert-error-redesign {
+    background: #fdf2f2;
+    color: #e02424;
+    border-left: 4px solid #e02424;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* AUTH UI */
   .auth-section {
     min-height: calc(100vh - 68px);

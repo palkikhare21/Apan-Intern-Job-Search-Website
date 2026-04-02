@@ -7,7 +7,10 @@
     }
   ],
   "routes": [
-    { "handle": "filesystem" },
+    {
+      "src": "/(main.css|redesign.css|redesign.js|style.css|assets/.*)",
+      "dest": "/public/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "index.js"

@@ -7,11 +7,14 @@
         <div class="auth-card-redesign fade-in">
             <div class="auth-header-redesign">
                 <div class="hero-badge" style="margin-left:auto;margin-right:auto;">✦ Create Your Future</div>
-                <h2>Sign Up</h2>
+                <h2>Sign Up as a <%= usertype.charAt(0).toUpperCase() + usertype.slice(1) %></h2>
                 <p>Join thousands of others on ApnaIntern. Create your account and explore endless opportunities.</p>
             </div>
 
             <form method="POST" action="/signup" class="form-redesign" novalidate>
+                <!-- HIDDEN USERTYPE FIELD: Crucial fix for Vercel deployment -->
+                <input type="hidden" name="usertype" value="<%= usertype %>">
+
                 <div class="form-group-redesign">
                     <label for="username">Username</label>
                     <input id="username" name="username" placeholder="Choose a username" type="text" required>
@@ -45,7 +48,7 @@
         fades.forEach((el, index) => {
             setTimeout(() => {
                 el.classList.add('visible');
-            }, 100 * index);
+            }, 150 * index);
         });
     });
 </script>

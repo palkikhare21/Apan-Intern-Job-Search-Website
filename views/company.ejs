@@ -1,1 +1,86 @@
-<%- layout("/layouts/boilerplate")%>
+<%- layout("/layouts/mainboilerplate.ejs") %>
+
+<div class="section-redesign">
+    <div class="section-header-redesign fade-in">
+        <div>
+            <div class="section-label-redesign">Employer Portal</div>
+            <h1 class="section-title-redesign">Welcome Back, <%= currUser.username %></h1>
+        </div>
+        <div class="nav-actions">
+            <a href="/company/job/new" class="btn-redesign btn-primary-redesign">
+                <i class="fas fa-plus"></i> Post Job
+            </a>
+            <a href="/company/internship/new" class="btn-redesign btn-ghost-redesign">
+                <i class="fas fa-plus"></i> Post Internship
+            </a>
+        </div>
+    </div>
+
+    <!-- STATS GRID -->
+    <div class="hero-stats fade-in" style="margin-top: 0; margin-bottom: 40px; grid-template-columns: repeat(4, 1fr); display: grid; gap: 20px;">
+        <div class="category-card" style="padding: 30px; text-align: center;">
+            <div class="stat-num" style="color: var(--blue);"><%= totalapplicant %></div>
+            <div class="stat-label">Total Applicants</div>
+        </div>
+        <div class="category-card" style="padding: 30px; text-align: center;">
+            <div class="stat-num" style="color: var(--green);"><%= shortlist %></div>
+            <div class="stat-label">Shortlisted</div>
+        </div>
+        <div class="category-card" style="padding: 30px; text-align: center;">
+            <div class="stat-num" style="color: var(--accent);"><%= hired %></div>
+            <div class="stat-label">Hired</div>
+        </div>
+        <div class="category-card" style="padding: 30px; text-align: center;">
+            <div class="stat-num" style="color: #e67e22;"><%= rejected %></div>
+            <div class="stat-label">Rejected</div>
+        </div>
+    </div>
+
+    <div class="row fade-in">
+        <div class="col-lg-8">
+            <div class="section-header-redesign" style="margin-bottom: 24px;">
+                <div class="section-title-redesign" style="font-size: 1.5rem;">Your Active Listings</div>
+                <div style="display:flex; gap:12px;">
+                    <a href="/company/job" class="section-link-redesign">Manage Jobs</a>
+                    <a href="/company/internship" class="section-link-redesign">Manage Internships</a>
+                </div>
+            </div>
+            
+            <div class="jobs-grid-redesign" style="grid-template-columns: 1fr; gap: 16px;">
+                <!-- This is a placeholder section. In a real app, you'd loop through listings here -->
+                <div class="job-card-redesign" style="padding: 30px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div class="job-title-redesign">Ready to hire?</div>
+                        <div class="job-company">Post your first listing to start receiving applications from top talent.</div>
+                    </div>
+                    <a href="/company/job/new" class="btn-redesign btn-primary-redesign">Add Listing</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="section-header-redesign" style="margin-bottom: 24px;">
+                <div class="section-title-redesign" style="font-size: 1.5rem;">Hiring Tips</div>
+            </div>
+            <div class="category-card" style="padding: 24px;">
+                <div class="mini-title" style="color: var(--accent); margin-bottom: 10px;">✦ Pro Tip</div>
+                <p style="font-size: 0.88rem; line-height: 1.6; color: var(--muted);">
+                    Detailed job descriptions receive **3x more** relevant applications. Make sure to list specific skills like React, Node.js, or UI Design.
+                </p>
+                <hr style="opacity: 0.1; margin: 16px 0;">
+                <a href="#" class="section-link-redesign" style="font-size: 0.82rem;">Read More Guides</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fades = document.querySelectorAll('.fade-in');
+        fades.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 100 * index);
+        });
+    });
+</script>

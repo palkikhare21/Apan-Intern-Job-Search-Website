@@ -1,27 +1,70 @@
-<%- layout("/layouts/boilerplate")%>
-<body>
-    <br>
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 ">
-        <% for(let i=0;i<applications.length;i++){%>
-        <a
-            <% if(applications[i].internshipId){%>
-                href="/student/internship/<%=applications[i].internshipId%>"
-            <%}%>
-            <% if(applications[i].jobId){%>
-                href="/student/job/<%=applications[i].jobId%>"
-            <%}%>
-        style="text-decoration:none;">
-        <div class="card col intern-card" style="width: 20rem;">
-           <div class="card-body">
-                <div>
-                    <h5 class="card-title"><%=internjobCompanylist[i].companyname%></h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary"><%=requestlist[i].title%></h6>
-                    <p class="card-text"><%=applications[i].Status%></p>
-                    <p class="card-text">applied on <%=applications[i].appliedAt.toDateString();%></p>   
-                </div>
+<%- layout("/layouts/mainboilerplate.ejs") %>
+
+<div class="section-redesign">
+    <div class="section-header-redesign fade-in">
+        <div>
+            <div class="section-label-redesign">Track Applications</div>
+            <h1 class="section-title-redesign">My Applied Jobs</h1>
+            <p class="auth-header-redesign p" style="margin-left: 0;">Monitor your hiring progress across all your applied positions.</p>
+        </div>
+        <a href="/student" class="section-link-redesign"><i class="fas fa-arrow-left"></i> Back to Portal</a>
+    </div>
+
+    <div class="row fade-in">
+        <div class="col-12">
+            <div class="jobs-grid-redesign" style="grid-template-columns: 1fr; gap: 20px;">
+                <% if (applications && applications.length > 0) { %>
+                    <% for(let i=0; i < applications.length; i++){ %>
+                        <div class="job-card-redesign" style="padding: 32px; display: flex; justify-content: space-between; align-items: center; cursor: default;">
+                            <div style="display: flex; gap: 24px; align-items: center;">
+                                <div class="company-avatar" style="background: var(--paper); color: var(--accent); border: 1px solid var(--border); width: 70px; height: 70px; font-size: 1.8rem; border-radius: 16px;">
+                                    <%= internjobCompanylist[i].companyname ? internjobCompanylist[i].companyname.charAt(0).toUpperCase() : "A" %>
+                                </div>
+                                <div>
+                                    <h3 class="job-title-redesign" style="font-size: 1.4rem; margin-bottom: 4px;"><%= requestlist[i].title %></h3>
+                                    <div class="job-company" style="margin-bottom: 12px; font-size: 1rem;"><i class="fas fa-building"></i> <%= internjobCompanylist[i].companyname %></div>
+                                    <div class="tag-row">
+                                        <span class="tag <%= applications[i].Status === 'accepted' ? 'tag-green' : (applications[i].Status === 'rejected' ? 'tag-orange' : 'tag-blue') %>" style="font-size: 0.8rem; padding: 6px 14px;">
+                                            Status: <%= applications[i].Status.charAt(0).toUpperCase() + applications[i].Status.slice(1) %>
+                                        </span>
+                                        <span class="tag tag-blue" style="font-size: 0.8rem; padding: 6px 14px;"><i class="far fa-calendar-alt"></i> Applied: <%= applications[i].appliedAt.toDateString() %></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 12px;">
+                                <a 
+                                    <% if(applications[i].internshipId){ %> 
+                                        href="/student/internship/<%= applications[i].internshipId %>" 
+                                    <% } else if(applications[i].jobId){ %> 
+                                        href="/student/job/<%= applications[i].jobId %>" 
+                                    <% } %>
+                                    class="btn-redesign btn-ghost-redesign" style="padding: 12px 24px; font-size: 0.9rem;">
+                                    View Job Details
+                                </a>
+                            </div>
+                        </div>
+                    <% } %>
+                <% } else { %>
+                    <div class="category-card" style="padding: 80px; text-align: center; border-style: dashed;">
+                        <div style="font-size: 4rem; margin-bottom: 24px;">🚀</div>
+                        <h3 class="section-title-redesign" style="font-size: 1.8rem;">Ready to start your career?</h3>
+                        <p class="auth-header-redesign p" style="margin-bottom: 30px;">You haven't applied to any roles yet. Explore thousands of internships and jobs today!</p>
+                        <a href="/student" class="btn-redesign btn-primary-redesign" style="padding: 14px 40px;">Find Opportunities</a>
+                    </div>
+                <% } %>
             </div>
         </div>
-        </a>
-        <% } %>
     </div>
-</body>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fades = document.querySelectorAll('.fade-in');
+        fades.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 100 * index);
+        });
+    });
+</script>

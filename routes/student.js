@@ -48,7 +48,7 @@ router.get("/myapplication",isLoggedIn,wrapAsync(async(req,res)=>{
 
 
 router.get("/signup",optionstudent,(req,res)=>{
-    res.render("signup.ejs");
+    res.render("signup.ejs", { usertype: "student" });
 });
 
 router.get("/details",isLoggedIn,(req,res)=>{

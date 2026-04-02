@@ -1,0 +1,96 @@
+<%- layout("/layouts/mainboilerplate.ejs") %>
+
+<div class="section-redesign">
+    <div class="section-header-redesign fade-in">
+        <div>
+            <div class="section-label-redesign">Student Profile</div>
+            <h1 class="section-title-redesign"><%= student[0].name %></h1>
+            <p class="auth-header-redesign p" style="margin-left: 0;"><%= student[0].course %> · <%= student[0].college %> · Class of 2024</p>
+        </div>
+        <div class="nav-actions">
+            <a href="/student/details" class="btn-redesign btn-ghost-redesign">
+                <i class="fas fa-edit"></i> Edit Profile
+            </a>
+            <a href="/student" class="btn-redesign btn-primary-redesign">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="row fade-in">
+        <div class="col-lg-4">
+            <!-- INFO CARD -->
+            <div class="category-card" style="padding: 32px; margin-bottom: 24px;">
+                <h3 class="section-title-redesign" style="font-size: 1.4rem; margin-bottom: 24px;">Personal Info</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 700; color: var(--ink); font-size: 0.8rem; text-transform: uppercase;">Location</div>
+                    <div style="color: var(--muted);"><%= student[0].address || "Not Provided" %></div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 700; color: var(--ink); font-size: 0.8rem; text-transform: uppercase;">Gender</div>
+                    <div style="color: var(--muted);"><%= student[0].gender %></div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 700; color: var(--ink); font-size: 0.8rem; text-transform: uppercase;">Skills</div>
+                    <div class="tag-row" style="margin-top: 8px;">
+                        <% student[0].skills.forEach(skill => { %>
+                            <span class="tag tag-blue"><%= skill %></span>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESUME CARD -->
+            <div class="category-card" style="padding: 32px;">
+                <h3 class="section-title-redesign" style="font-size: 1.4rem; margin-bottom: 20px;">Resume</h3>
+                <% if(student[0].resumeUrl){ %>
+                    <a href="<%= student[0].resumeUrl %>" target="_blank" class="btn-redesign btn-primary-redesign" style="width: 100%; justify-content: center; margin-top: 10px;">
+                        <i class="fas fa-download"></i> View Full Resume
+                    </a>
+                <% } else { %>
+                    <p style="color: var(--muted); font-size: 0.9rem;">No resume uploaded yet.</p>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <!-- RESUME PREVIEW -->
+            <div class="category-card" style="padding: 40px; min-height: 800px; display: flex; flex-direction: column;">
+                <h3 class="section-title-redesign" style="font-size: 1.6rem; margin-bottom: 20px;">Resume Preview</h3>
+                <% if(student[0].resumeUrl){ %>
+                    <div style="flex-grow: 1; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; position: relative;">
+                        <!-- Embed for Google Drive/PDF Preview -->
+                        <iframe src="<%= student[0].resumeUrl %>" style="width: 100%; height: 100%; border: none;" allow="autoplay"></iframe>
+                        <div style="position: absolute; bottom: 20px; right: 20px;">
+                            <a href="<%= student[0].resumeUrl %>" target="_blank" class="btn-redesign btn-white" style="box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                <i class="fas fa-external-link-alt"></i> Open in New Tab
+                            </a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center; background: var(--paper); border-radius: 12px; border: 2px dashed var(--border);">
+                        <div style="text-align: center;">
+                            <i class="fas fa-file-invoice" style="font-size: 3rem; color: var(--border); margin-bottom: 20px;"></i>
+                            <p style="color: var(--muted);">Resume link will be previewed here.</p>
+                            <a href="/student/details" class="section-link-redesign">Upload Resume</a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fades = document.querySelectorAll('.fade-in');
+        fades.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 100 * index);
+        });
+    });
+</script>

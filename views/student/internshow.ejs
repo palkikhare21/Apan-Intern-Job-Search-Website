@@ -1,35 +1,82 @@
-<%- layout("/layouts/boilerplate")%>
-<body>
-    <div class="row">
-        <%- include("../includes/backarrow.ejs") %>
-        <div class="card col-6 offset-3 intern-card">
-           <div class="card-body">
-                <div class="internship-text">
-                    <h4 class="card-title"><b><%= internship.title %></b></h4>
-                    <h6 class="card-subtitle mb-2 text-body-secondary"><%= company.companyname%></h6>
-                    <p class="card-text"><%= internship.internshiptype%></p>
-                    <h6><b>location:</b></h6>
-                    <p class="card-text"><%=internship.location%></p>
-                    <h6><b>stipend:</b></h6>
-                    <p class="card-text"><%=internship.stipend%>/month</p>
-                    <h6><b>description:</b></h6>
-                    <p class="card-text"><%=internship.description%></p>
-                    <h6><b>requirement:</b></h6>
-                    <p class="card-text"><%=internship.requirement%></p>
-                    <h6><b>Number of opening:</b></h6>
-                    <p class="card-text"><%=internship.openings%></p>
-                </div>
-                <div class="border-top pt-3">
-                    <% if (applied.length==0) { %>
-                        <form method="post" action="/student/internship/<%=internship._id%>">
-                            <button class="btn btn-primary">Apply</button>
+<%- layout("/layouts/mainboilerplate.ejs") %>
+
+<div class="section-redesign">
+    <div class="section-header-redesign fade-in">
+        <div>
+            <div class="section-label-redesign">Internship Details</div>
+            <h1 class="section-title-redesign"><%= internship.title %></h1>
+            <p class="auth-header-redesign p" style="margin-left: 0;"><%= company.companyname %> · <%= internship.location %></p>
+        </div>
+        <a href="/student" class="section-link-redesign"><i class="fas fa-arrow-left"></i> Back to Opportunities</a>
+    </div>
+
+    <div class="row fade-in">
+        <div class="col-lg-8">
+            <div class="category-card" style="padding: 40px; margin-bottom: 24px;">
+                <h3 class="section-title-redesign" style="font-size: 1.5rem; margin-bottom: 24px;">About the Internship</h3>
+                <p style="white-space: pre-line; line-height: 1.8; color: var(--muted); margin-bottom: 30px;">
+                    <%= internship.description %>
+                </p>
+
+                <hr style="opacity: 0.05; margin: 30px 0;">
+
+                <h3 class="section-title-redesign" style="font-size: 1.5rem; margin-bottom: 20px;">Requirements</h3>
+                <p style="white-space: pre-line; line-height: 1.8; color: var(--muted);">
+                    <%= internship.requirement %>
+                </p>
+
+                <div style="margin-top: 40px; display: flex; gap: 20px;">
+                    <% if (applied.length == 0) { %>
+                        <form method="POST" action="/student/internship/<%= internship._id %>" style="flex-grow: 1;">
+                            <button class="btn-redesign btn-primary-redesign" style="width: 100%; justify-content: center; padding: 16px; font-size: 1.1rem;">
+                                <i class="fas fa-paper-plane"></i> Apply Now
+                            </button>
                         </form>
                     <% } else { %>
-                        <button class="btn btn-primary" disabled>Apply</button>
+                        <button class="btn-redesign btn-ghost-redesign" disabled style="width: 100%; justify-content: center; padding: 16px; font-size: 1.1rem; opacity: 0.6; cursor: not-allowed; border-color: var(--green); color: var(--green);">
+                            <i class="fas fa-check-circle"></i> Already Applied
+                        </button>
                     <% } %>
-                </div> 
+                </div>
             </div>
         </div>
 
+        <div class="col-lg-4">
+            <div class="category-card" style="padding: 32px; margin-bottom: 24px;">
+                <h3 class="section-title-redesign" style="font-size: 1.4rem; margin-bottom: 20px;">Quick Info</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 700; color: var(--ink); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 4px;">Stipend</div>
+                    <div style="color: var(--accent); font-weight: 700; font-size: 1.2rem;">₹<%= internship.stipend %> <span>/ month</span></div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 700; color: var(--ink); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 4px;">Internship Type</div>
+                    <div style="color: var(--muted);"><%= internship.internshiptype %></div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 700; color: var(--ink); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 4px;">Openings</div>
+                    <div style="color: var(--muted);"><%= internship.openings %> Available</div>
+                </div>
+            </div>
+
+            <div class="category-card" style="padding: 30px; background: var(--paper); border: 2px dashed var(--border); text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 12px;">🌟</div>
+                <h4 style="font-size: 1.1rem; margin-bottom: 8px;">Helpful Hint</h4>
+                <p style="font-size: 0.85rem; color: var(--muted); line-height: 1.5;">Make sure your resume is up-to-date before applying to increase your chances!</p>
+            </div>
+        </div>
     </div>
-</body>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fades = document.querySelectorAll('.fade-in');
+        fades.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 100 * index);
+        });
+    });
+</script>

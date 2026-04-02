@@ -53,18 +53,25 @@ const user_route=require("./routes/user.js");
 
 
 async function main() {
-    const dbUrl = process.env.STORAGE_URL || process.env.MONGODB_URI || process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/apnaintern";
+    const dbUrl = process.env.STORAGE_URL || process.env.MONGODB_URI || process.env.ATLAS_URL;
+    
+    if (!dbUrl) {
+        console.warn("No MONGODB_URI found! Falling back to local DB (may fail on Vercel)");
+    }
+
     try {
-        await mongoose.connect(dbUrl);
+        await mongoose.connect(dbUrl || "mongodb://127.0.0.1:27017/apnaintern", {
+            serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+        });
         console.log("Connected to MongoDB successfully");
     } catch (err) {
-        console.error("MongoDB connection error:", err);
+        console.error("Critical MongoDB connection error:", err);
     }
 }
 main();
 
 mongoose.connection.on("error", (err) => {
-    console.error("Mongoose connection error event:", err);
+    console.error("Mongoose connection heart-beat error:", err);
 });
 
 
