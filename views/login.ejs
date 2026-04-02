@@ -1,17 +1,46 @@
-<%- layout("/layouts/boilerplate")%>
-<div class="row mt-3">
-    <h3 class="col-6 offset-3">Login</h3>
-    <div class="col-6 offset-3">
-        <form method="post" action="/login" novalidate class="needs-validation">
-                <div class="mb-3"> 
-                    <label for="username" class="form-label">Username</label>
-                    <input id="username" name="username" placeholder="enter username" type="text" class="form-control" required>
+<%- layout("/layouts/mainboilerplate.ejs") %>
+
+<div class="auth-section">
+    <div class="auth-bg-gradient"></div>
+    
+    <div class="auth-container-redesign">
+        <div class="auth-card-redesign fade-in">
+            <div class="auth-header-redesign">
+                <div class="hero-badge" style="margin-left:auto;margin-right:auto;">✦ Welcome Back</div>
+                <h2>Login</h2>
+                <p>Enter your credentials to access your ApnaIntern account and continue your journey.</p>
+            </div>
+
+            <form method="POST" action="/login" class="form-redesign" novalidate>
+                <div class="form-group-redesign">
+                    <label for="username">Username</label>
+                    <input id="username" name="username" placeholder="Enter your username" type="text" required>
                 </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input id="password" name="password" placeholder="password"  type="password" class="form-control"  required>
+                
+                <div class="form-group-redesign">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" placeholder="••••••••" type="password" required>
                 </div>
-                <button class="btn btn-success">Login</button>
-        </form>
+
+                <button class="btn-redesign btn-primary-redesign" style="width:100%;justify-content:center;margin-top:10px;padding:14px;">
+                    <i class="fas fa-sign-in-alt"></i> Login to Account
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="/signup">Sign up for free</a>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fades = document.querySelectorAll('.fade-in');
+        fades.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 100 * index);
+        });
+    });
+</script>

@@ -1,25 +1,51 @@
-<%- layout("/layouts/boilerplate")%>
-<div class="row mt-3 ">
-    <h3 class="col-6 offset-3">Signup</h3>
-    <div class="col-6 offset-3">
-        <form method="post" action="/signup" novalidate class="needs-validation mb-10">
-                <div class="mb-3"> 
-                    <label for="username" class="form-label">Username</label>
-                    <input id="username" name="username" placeholder="enter username" type="text" class="form-control" required>
-                    <div class="valid-feedback">username is valid!</div>
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input id="email" name="email" placeholder="enter email"  type="email" class="form-control"  required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input id="password" name="password" placeholder="password"  type="password" class="form-control"  required>
-                </div>
-                <button class="btn btn-success">Signup</button>
-        </form>
-        <p>Already registered? <a href="/login">login</a></p>
+<%- layout("/layouts/mainboilerplate.ejs") %>
 
+<div class="auth-section">
+    <div class="auth-bg-gradient"></div>
+    
+    <div class="auth-container-redesign">
+        <div class="auth-card-redesign fade-in">
+            <div class="auth-header-redesign">
+                <div class="hero-badge" style="margin-left:auto;margin-right:auto;">✦ Create Your Future</div>
+                <h2>Sign Up</h2>
+                <p>Join thousands of others on ApnaIntern. Create your account and explore endless opportunities.</p>
+            </div>
+
+            <form method="POST" action="/signup" class="form-redesign" novalidate>
+                <div class="form-group-redesign">
+                    <label for="username">Username</label>
+                    <input id="username" name="username" placeholder="Choose a username" type="text" required>
+                </div>
+
+                <div class="form-group-redesign">
+                    <label for="email">Email Address</label>
+                    <input id="email" name="email" placeholder="you@example.com" type="email" required>
+                </div>
+                
+                <div class="form-group-redesign">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" placeholder="••••••••" type="password" required>
+                </div>
+
+                <button class="btn-redesign btn-primary-redesign" style="width:100%;justify-content:center;margin-top:10px;padding:14px;">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="/login">Login here</a>
+            </div>
+        </div>
     </div>
-
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fades = document.querySelectorAll('.fade-in');
+        fades.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 100 * index);
+        });
+    });
+</script>

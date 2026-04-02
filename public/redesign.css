@@ -1142,3 +1142,188 @@
     .cta-actions-redesign { flex-direction: column; width: 100%; }
     .cta-actions-redesign .btn-redesign { width: 100%; justify-content: center; }
   }
+
+  /* AUTH UI */
+  .auth-section {
+    min-height: calc(100vh - 68px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 4%;
+    position: relative;
+    background: var(--paper);
+    overflow: hidden;
+  }
+
+  .auth-bg-gradient {
+    position: absolute;
+    top: -10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,87,51,0.08) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  .auth-container-redesign {
+    width: 100%;
+    max-width: 1000px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .auth-card-redesign {
+    background: white;
+    border-radius: 24px;
+    padding: 48px;
+    width: 100%;
+    max-width: 500px;
+    border: 1.5px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+    text-align: center;
+  }
+
+  .auth-header-redesign {
+    margin-bottom: 32px;
+  }
+
+  .auth-header-redesign h2 {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+
+  .auth-header-redesign p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .form-redesign {
+    text-align: left;
+  }
+
+  .form-group-redesign {
+    margin-bottom: 20px;
+  }
+
+  .form-group-redesign label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .form-group-redesign input {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    font-family: 'Satoshi', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    outline: none;
+    background: rgba(0,0,0,0.01);
+  }
+
+  .form-group-redesign input:focus {
+    border-color: var(--accent);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(255,87,51,0.1);
+  }
+
+  .auth-footer {
+    margin-top: 24px;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .auth-footer a {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .auth-footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* SELECTION PAGE */
+  .selection-grid-redesign {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+    margin-top: 40px;
+  }
+
+  .selection-card-redesign {
+    background: white;
+    border-radius: 24px;
+    padding: 40px;
+    border: 1.5px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .selection-card-redesign:hover {
+    border-color: var(--accent);
+    transform: translateY(-8px);
+    box-shadow: 0 24px 60px rgba(255,87,51,0.12);
+  }
+
+  .selection-card-redesign .icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255,87,51,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    margin-bottom: 24px;
+    transition: transform 0.3s;
+  }
+
+  .selection-card-redesign:hover .icon-circle {
+    transform: scale(1.1) rotate(5deg);
+    background: var(--accent);
+    color: white;
+  }
+
+  .selection-card-redesign h3 {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .selection-card-redesign p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .selection-grid-redesign {
+      grid-template-columns: 1fr;
+    }
+    .auth-card-redesign {
+      padding: 32px 24px;
+    }
+  }
