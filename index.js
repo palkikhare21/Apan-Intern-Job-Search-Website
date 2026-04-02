@@ -20,7 +20,7 @@ app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true}));
 app.engine("ejs",ejsMate);
-app.use(express.static(path.join(__dirname,"/public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
 
 
@@ -52,14 +52,19 @@ const user_route=require("./routes/user.js");
 
 
 
-async function main(){
+async function main() {
     const dbUrl = process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/apnaintern";
-    await mongoose.connect(dbUrl);
+    try {
+        await mongoose.connect(dbUrl);
+        console.log("Connected to MongoDB successfully");
+    } catch (err) {
+        console.error("MongoDB connection error:", err);
+    }
 }
-main().then((res)=>{
-    console.log("connected to DB");
-}).catch((err)=>{
-    console.log(err);
+main();
+
+mongoose.connection.on("error", (err) => {
+    console.error("Mongoose connection error event:", err);
 });
 
 
