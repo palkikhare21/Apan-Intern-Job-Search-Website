@@ -17,6 +17,7 @@ const methodOverride=require("method-override");
 
 
 
+app.set("trust proxy", 1);
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true}));
@@ -26,6 +27,15 @@ app.use(methodOverride("_method"));
 
 
 const dbUrl = process.env.STORAGE_URL || process.env.MONGODB_URI || process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/apnaintern";
+
+// Logging to help debug environment variable issues on Vercel
+if (process.env.NODE_ENV === 'production') {
+    if (!process.env.STORAGE_URL && !process.env.MONGODB_URI && !process.env.ATLAS_URL) {
+        console.warn("WARNING: No remote MongoDB URI found in environment variables. Falling back to localhost (will likely fail on Vercel).");
+    } else {
+        console.log("Remote MongoDB URI detected.");
+    }
+}
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
@@ -47,6 +57,7 @@ const sessionOption={
     cookie:{
         maxAge:1000*60*60*24*7, // 7 days
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production" ? true : false // Secure cookies in production
     }
 };
 app.use(session(sessionOption));
@@ -70,7 +81,7 @@ const user_route=require("./routes/user.js");
 
 // Disable Mongoose buffering to avoid the 10s timeout error on Vercel.
 // Queries will now fail immediately if the DB is not connected.
-mongoose.set('bufferCommands', true);
+mongoose.set('bufferCommands', false);
 
 async function main() {
     try {
@@ -137,9 +148,12 @@ app.use((err,req,res,next)=>{
 });
 
 
-app.listen(8080,(req,res)=>{
-    console.log("listening..............");
-
-});
+// Only listen on a port if we are NOT running in a Vercel serverless environment
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    const PORT = 8080;
+    app.listen(PORT, () => {
+        console.log(`listening on port ${PORT}..............`);
+    });
+}
 
 module.exports = app;
