@@ -64,7 +64,9 @@ router.post("/details",wrapAsync(async(req,res)=>{
     let saved=await student.save();
     if(saved){
         req.flash("success","Welcome to ApnaIntern!");
-        res.redirect("/student");
+        req.session.save(() => {
+            res.redirect("/student");
+        });
     }
 }));
 router.get("/profile",isLoggedIn,wrapAsync(async(req,res)=>{

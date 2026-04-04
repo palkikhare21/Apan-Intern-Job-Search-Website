@@ -117,7 +117,9 @@ router.post("/details",isLoggedIn,wrapAsync(async(req,res)=>{
     let saved=await Companyone.save();
      if(saved){
         req.flash("success","Welcome to ApnaIntern!");
-        res.redirect("/company");
+        req.session.save(() => {
+            res.redirect("/company");
+        });
     }
 }));
 router.get("/profile",isLoggedIn,wrapAsync(async(req,res)=>{

@@ -35,20 +35,23 @@ router.get("/login",(req,res)=>{
 });
 router.post("/login",saveredirectUrl,passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),wrapAsync(async(req,res)=>{
     req.flash("success","Welcome to ApnaIntern!");
-    if(req.user.usertype==="company"){
-        if(res.locals.redirect){
-            res.redirect(res.locals.redirect);
-        }else{
-            res.redirect("/company");
+    req.session.save((err) => {
+        if(err) return next(err);
+        if(req.user.usertype==="company"){
+            if(res.locals.redirect){
+                res.redirect(res.locals.redirect);
+            }else{
+                res.redirect("/company");
+            }
         }
-    }
-    else{
-        if(res.locals.redirect){
-            res.redirect(res.locals.redirect);
-        }else{
-           res.redirect("/student");
+        else {
+            if(res.locals.redirect){
+                res.redirect(res.locals.redirect);
+            }else{
+               res.redirect("/student");
+            }
         }
-    }
+    });
 }));
 
 router.get("/logout",(req,res,next)=>{
