@@ -28,17 +28,28 @@ app.use(methodOverride("_method"));
 
 const dbUrl = process.env.STORAGE_URL || process.env.MONGODB_URI || process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/apnaintern";
 
-// Logging to help debug environment variable issues on Vercel
+// Helper for shared MongoDB client in serverless environments
+let clientPromise;
+
 if (process.env.NODE_ENV === 'production') {
     if (!process.env.STORAGE_URL && !process.env.MONGODB_URI && !process.env.ATLAS_URL) {
-        console.warn("WARNING: No remote MongoDB URI found in environment variables. Falling back to localhost (will likely fail on Vercel).");
+        console.warn("WARNING: No remote MongoDB URI found. Deployment will likely crash.");
     } else {
         console.log("Remote MongoDB URI detected.");
     }
 }
 
+try {
+    // Shared clientPromise ensures Mongoose and session storage reuse the same connection
+    clientPromise = mongoose.connect(dbUrl, {
+        serverSelectionTimeoutMS: 5000,
+    }).then(m => m.connection.getClient());
+} catch (err) {
+    console.error("FAILED to initiate MongoDB connection promise:", err);
+}
+
 const store = MongoStore.create({
-    mongoUrl: dbUrl,
+    clientPromise: clientPromise,
     crypto: {
         secret: "secretcode"
     },
@@ -46,7 +57,7 @@ const store = MongoStore.create({
 });
 
 store.on("error", (err) => {
-    console.log("Error in Mongo Session Store:", err);
+    console.error("SESSION_STORE_ERROR:", err);
 });
 
 const sessionOption={ 
@@ -83,15 +94,16 @@ const user_route=require("./routes/user.js");
 // Queries will now fail immediately if the DB is not connected.
 mongoose.set('bufferCommands', false);
 
-async function main() {
+// Reliable Mongoose connection handler for serverless
+async function connectToDatabase() {
     try {
-        await mongoose.connect(dbUrl);
-        console.log("Connected to MongoDB successfully");
+        await clientPromise;
+        console.log("Connected to MongoDB via shared promise.");
     } catch (err) {
-        console.error("Critical MongoDB connection error:", err);
+        console.error("CRITICAL_DB_CONNECTION_ERROR:", err);
     }
 }
-main();
+connectToDatabase();
 
 mongoose.connection.on("error", (err) => {
     console.error("Mongoose connection heart-beat error:", err);
