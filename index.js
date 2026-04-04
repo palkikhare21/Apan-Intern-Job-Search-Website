@@ -3,7 +3,8 @@ const app=express();
 const mongoose=require("mongoose");
 const ejsMate=require("ejs-mate");
 const path=require("path");
-const session=require("express-session");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const passport=require("passport");
 const LocalStrategy=require("passport-local");
 const expressError=require("./utils/expressError.js");
@@ -24,9 +25,24 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
 
 
+const dbUrl = process.env.STORAGE_URL || process.env.MONGODB_URI || process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/apnaintern";
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    crypto: {
+        secret: "secretcode"
+    },
+    touchAfter: 24 * 3600
+});
+
+store.on("error", (err) => {
+    console.log("Error in Mongo Session Store:", err);
+});
+
 const sessionOption={ 
+    store: store,
     secret:"secretcode",
-    resave:true,
+    resave:false,
     saveUninitialized:false,
     cookie:{
         maxAge:1000*60*60*24*7, // 7 days
@@ -57,12 +73,8 @@ const user_route=require("./routes/user.js");
 mongoose.set('bufferCommands', true);
 
 async function main() {
-    const dbUrl = process.env.STORAGE_URL || process.env.MONGODB_URI || process.env.ATLAS_URL;
-    
-    console.log("DB URL Found:", !!dbUrl); // Log if the URL arrives at the server
-
     try {
-        await mongoose.connect(dbUrl || "mongodb://127.0.0.1:27017/apnaintern");
+        await mongoose.connect(dbUrl);
         console.log("Connected to MongoDB successfully");
     } catch (err) {
         console.error("Critical MongoDB connection error:", err);

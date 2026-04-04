@@ -53,15 +53,14 @@ router.get("/details",isLoggedIn,(req,res)=>{
     res.render("student/studentprofile.ejs");
 });
 
-router.post("/details",wrapAsync(async(req,res)=>{
+router.post("/details", isLoggedIn, wrapAsync(async(req,res)=>{
     const rawSkills = req.body.list.skills;
     const skillsArray = rawSkills.split(',').map(skill => skill.trim()).filter(Boolean);
-    req.body.list.skills=skillsArray;
-    let list=req.body.list;
-    let student=new Student(list);
-    console.log(req.user);
-    console.log(list);
-    let saved=await student.save();
+    req.body.list.skills = skillsArray;
+    let list = req.body.list;
+    list.studentId = req.user._id;
+    let student = new Student(list);
+    let saved = await student.save();
     if(saved){
         req.flash("success","Welcome to ApnaIntern!");
         req.session.save(() => {

@@ -113,6 +113,7 @@ router.get("/details",isLoggedIn,(req,res)=>{
 
 router.post("/details",isLoggedIn,wrapAsync(async(req,res)=>{
     let list=req.body.list;
+    list.companyId = req.user._id;
     let Companyone=new Company(list);
     let saved=await Companyone.save();
      if(saved){
