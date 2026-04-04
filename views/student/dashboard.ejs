@@ -187,23 +187,57 @@
                 </div>
             </div>
 
-            <!-- VACANCIES STATS -->
-            <div class="dash-card">
+            <!-- MY APPLICATIONS -->
+            <div class="dash-card mt-4">
                 <div class="dash-card-header">
-                    <h3>Vacancies Stats</h3>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Daily</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Weekly</button>
-                        <button type="button" class="btn btn-sm btn-primary">Monthly</button>
-                    </div>
+                    <h3>My Applications</h3>
+                    <a href="/student/myapplication" class="text-primary text-decoration-none small fw-bold">View All</a>
                 </div>
-                <div class="chart-container" style="height: 300px;">
-                    <canvas id="vacancyChart"></canvas>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle custom-table">
+                        <thead>
+                            <tr class="text-muted">
+                                <th>Role</th>
+                                <th>Company</th>
+                                <th>Date Applied</th>
+                                <th>Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (internships && internships.length > 0) { %>
+                                <% internships.slice(0, 5).forEach(intern => { %>
+                                    <tr>
+                                        <td class="fw-bold"><%= intern.title %></td>
+                                        <td>ApnaPartner</td>
+                                        <td><%= new Date().toLocaleDateString() %></td>
+                                        <td><span class="status-badge status-pending">Applied</span></td>
+                                        <td class="text-end">
+                                            <a href="#" class="btn btn-sm btn-outline-primary shadow-sm"><i class="fas fa-info-circle me-1"></i> Details</a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">No applications found.</td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </main>
 </div>
+
+<style>
+    .custom-table th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; border-top: none; }
+    .custom-table td { padding: 15px 10px; font-size: 0.9rem; }
+    .status-badge { padding: 4px 12px; border-radius: 100px; font-size: 0.75rem; font-weight: 600; }
+    .status-pending { background: #fff8e1; color: #f59e0b; }
+    .status-hired { background: #e8f5e9; color: #2e7d32; }
+    .status-rejected { background: #ffebee; color: #c62828; }
+</style>
 
 <script>
     // PROFILE DROPDOWN

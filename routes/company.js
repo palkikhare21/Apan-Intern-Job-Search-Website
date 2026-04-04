@@ -8,9 +8,11 @@ const Application = require("../models/application.js");
 const Company = require("../models/company.js");
 
 
-router.get("/",wrapAsync(async(req,res)=>{
+router.get("/", isLoggedIn, wrapAsync(async(req,res)=>{
     const jobIds = await Job.find({owner:req.user.id }).distinct('_id');
     const internshipIds = await Internship.find({ owner:req.user.id  }).distinct('_id');
+    
+    // Fetch stats
     const totalapplicant = await Application.countDocuments({
         $or: [
                { jobId: { $in: jobIds } },
@@ -24,23 +26,34 @@ router.get("/",wrapAsync(async(req,res)=>{
             { internshipId: { $in: internshipIds } }
         ]
     });
-    const hired=await Application.countDocuments({
-        Status:"hired",
+    const hired = await Application.countDocuments({
+        Status: "hired",
         $or: [
             { jobId: { $in: jobIds } },
             { internshipId: { $in: internshipIds } }
         ]
     });
-     const rejected=await Application.countDocuments({
-        Status:"rejected",
+    const rejected = await Application.countDocuments({
+        Status: "rejected",
         $or: [
             { jobId: { $in: jobIds } },
             { internshipId: { $in: internshipIds } }
         ]
     });
-    
-    console.log(totalapplicant,shortlist,hired,rejected);
-    res.render("company.ejs",{totalapplicant,shortlist,hired,rejected});
+
+    // Fetch all applications for the dashboard list
+    const applications = await Application.find({
+        $or: [
+            { jobId: { $in: jobIds } },
+            { internshipId: { $in: internshipIds } }
+        ]
+    })
+    .populate('userId')
+    .populate('jobId')
+    .populate('internshipId')
+    .sort({ appliedAt: -1 });
+
+    res.render("company/dashboard.ejs", { totalapplicant, shortlist, hired, rejected, applications });
 }));
 
 //create new
@@ -61,18 +74,30 @@ router.post("/",wrapAsync(async(req,res)=>{
     res.redirect("/company");
 }));
 
-router.post("/application/:id",wrapAsync(async(req,res)=>{
+router.post("/application/:id", isLoggedIn, wrapAsync(async(req,res)=>{
     let {id}=req.params;
     let action=req.query.action;
-    let application=await Application.findById(id);
-    application.Status=action;
-    application.save();
-    if(application.internshipId){
-        const Aid=application.internshipId;
-        res.redirect(`/company/internship/application/${Aid}`);
-    }else{
-        const Aid=application.jobId;
-        res.redirect(`/company/job/application/${Aid}`);
+    let application=await Application.findById(id).populate('jobId').populate('internshipId');
+    
+    // Security check: Ensure the company owns this job/internship
+    const listing = application.jobId || application.internshipId;
+    if (listing.owner.toString() !== req.user.id) {
+        req.flash("error", "You do not have permission to manage this application.");
+        return res.redirect("/company");
+    }
+
+    application.Status = action;
+    await application.save();
+
+    req.flash("success", `Application marked as ${action}.`);
+    
+    // Redirect back to dashboard if they came from there, otherwise to the specific list
+    if (req.get('Referer') && req.get('Referer').includes('/company')) {
+        res.redirect("/company");
+    } else if(application.internshipId){
+        res.redirect(`/company/internship/application/${application.internshipId._id}`);
+    } else {
+        res.redirect(`/company/job/application/${application.jobId._id}`);
     }
 }));
 

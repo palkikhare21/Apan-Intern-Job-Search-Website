@@ -54,7 +54,7 @@ const user_route=require("./routes/user.js");
 
 // Disable Mongoose buffering to avoid the 10s timeout error on Vercel.
 // Queries will now fail immediately if the DB is not connected.
-mongoose.set('bufferCommands', false);
+mongoose.set('bufferCommands', true);
 
 async function main() {
     const dbUrl = process.env.STORAGE_URL || process.env.MONGODB_URI || process.env.ATLAS_URL;

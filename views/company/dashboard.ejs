@@ -1,0 +1,238 @@
+<% layout("/layouts/mainboilerplate") %>
+<link rel="stylesheet" href="/css/dashboard.css">
+
+<div class="dashboard-container">
+    <!-- SIDEBAR -->
+    <aside class="dash-sidebar">
+        <div class="dash-logo">
+            Apna<span>Intern</span>
+        </div>
+        <div class="px-4 py-2 small text-muted text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.05em;">Menu</div>
+        <nav class="dash-nav">
+            <a href="/company" class="dash-nav-item active">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="/company/job" class="dash-nav-item">
+                <i class="fas fa-briefcase"></i> Posted Jobs
+            </a>
+            <a href="/company/internship" class="dash-nav-item">
+                <i class="fas fa-graduation-cap"></i> Posted Internships
+            </a>
+            <a href="/company/internship/new" class="dash-nav-item">
+                <i class="fas fa-plus-circle"></i> Create New
+            </a>
+            <div class="px-4 py-2 mt-3 small text-muted text-uppercase fw-bold" style="font-size: 0.7rem; letter-spacing: 0.05em;">Account</div>
+            <a href="/company/profile" class="dash-nav-item">
+                <i class="fas fa-building"></i> Company Profile
+            </a>
+            <a href="#" class="dash-nav-item">
+                <i class="fas fa-star"></i> Feedback
+            </a>
+        </nav>
+        <div class="dash-upgrade-card" style="background: var(--dash-accent);">
+            <h4>Reach More Students</h4>
+            <div class="small mb-2 opacity-75">Boost your listings to the top for 3x more applications.</div>
+            <button class="dash-upgrade-btn" style="color: var(--dash-accent);">Boost Now</button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dash-main">
+        <!-- TOPBAR -->
+        <header class="dash-topbar">
+            <div class="dash-welcome d-none d-lg-block">
+                <h4 class="mb-0 fw-bold">Company Dashboard</h4>
+            </div>
+            <div class="dash-topbar-actions">
+                <div class="topbar-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="topbar-badge">2</span>
+                </div>
+                
+                <div class="dash-profile-trigger" id="profileTrigger">
+                    <div class="dash-avatar">
+                        <%= currUser.username.charAt(0).toUpperCase() %>
+                    </div>
+                    <div class="dash-profile-info d-none d-md-block">
+                        <h4><%= currUser.username %></h4>
+                        <p>Employer</p>
+                    </div>
+                    <i class="fas fa-chevron-down ms-2" style="font-size: 0.7rem; color: #94a3b8;"></i>
+
+                    <!-- DROPDOWN -->
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="/company/profile" class="dropdown-item"><i class="fas fa-building"></i> Profile</a>
+                        <a href="/logout" class="dropdown-item text-danger"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD BODY -->
+        <div class="dash-content">
+            <div class="row align-items-center mb-4">
+                <div class="col-md-6">
+                    <h2 class="fw-bold mb-1">Hello, <%= currUser.username %>!</h2>
+                    <p class="text-muted">Here's what's happening with your recruitment today.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="/company/internship/new" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm">
+                        <i class="fas fa-plus me-2"></i> Post New Role
+                    </a>
+                </div>
+            </div>
+
+            <!-- STATS GRID -->
+            <div class="dash-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(46, 91, 255, 0.1); color: var(--dash-primary);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-val"><%= totalapplicant %></div>
+                    <div class="stat-label">Total Applicants</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(255, 179, 71, 0.1); color: #ffb347;">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-val"><%= shortlist %></div>
+                    <div class="stat-label">Shortlisted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(39, 174, 96, 0.1); color: #27ae60;">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="stat-val"><%= hired %></div>
+                    <div class="stat-label">Hired</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">
+                        <i class="fas fa-user-times"></i>
+                    </div>
+                    <div class="stat-val"><%= rejected %></div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+
+            <!-- RECENT APPLICANTS -->
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <h3>Recent Applicants</h3>
+                    <a href="#" class="text-primary text-decoration-none small fw-bold">View All</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle custom-table">
+                        <thead>
+                            <tr class="text-muted">
+                                <th>Student Name</th>
+                                <th>Applied For</th>
+                                <th>Date Applied</th>
+                                <th>Status</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (applications.length > 0) { %>
+                                <% applications.forEach(app => { %>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-sm me-3">
+                                                    <%= app.userId.username.charAt(0).toUpperCase() %>
+                                                </div>
+                                                <div class="fw-bold"><%= app.userId.username %></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark border"><%= app.jobId ? app.jobId.title : app.internshipId.title %></span>
+                                        </td>
+                                        <td><%= new Date(app.appliedAt).toLocaleDateString() %></td>
+                                        <td>
+                                            <% if(app.Status === 'pending') { %>
+                                                <span class="status-badge status-pending">Pending</span>
+                                            <% } else if(app.Status === 'accepted') { %>
+                                                <span class="status-badge status-hired">Shortlisted</span>
+                                            <% } else if(app.Status === 'hired') { %>
+                                                <span class="status-badge status-hired">Hired</span>
+                                            <% } else { %>
+                                                <span class="status-badge status-rejected">Rejected</span>
+                                            <% } %>
+                                        </td>
+                                        <td class="text-end">
+                                            <form action="/company/application/<%= app._id %>?action=accepted" method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-outline-success me-1" title="Shortlist"><i class="fas fa-check"></i></button>
+                                            </form>
+                                            <form action="/company/application/<%= app._id %>?action=rejected" method="POST" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger me-1" title="Reject"><i class="fas fa-times"></i></button>
+                                            </form>
+                                            <a href="/student/profile/<%= app.userId._id %>" class="btn btn-sm btn-outline-primary" title="View Profile"><i class="fas fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" class="text-center py-5 text-muted">
+                                        No applications received yet.
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<style>
+    .custom-table th {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        border-top: none;
+        padding-bottom: 15px;
+    }
+    .custom-table td {
+        padding: 15px 10px;
+        font-size: 0.9rem;
+    }
+    .avatar-sm {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: var(--dash-primary);
+    }
+    .status-badge {
+        padding: 5px 12px;
+        border-radius: 100px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+    .status-pending { background: #fff8e1; color: #f59e0b; }
+    .status-hired { background: #e8f5e9; color: #2e7d32; }
+    .status-rejected { background: #ffebee; color: #c62828; }
+</style>
+
+<script>
+    // PROFILE DROPDOWN
+    const trigger = document.getElementById('profileTrigger');
+    const dropdown = document.getElementById('profileDropdown');
+    
+    if (trigger) {
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+        });
+    }
+    
+    document.addEventListener('click', () => {
+        if (dropdown) dropdown.classList.remove('show');
+    });
+</script>
