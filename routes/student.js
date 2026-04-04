@@ -8,13 +8,11 @@ const Application=require("../models/application.js");
 const Company=require("../models/company.js");
 const Student = require("../models/student.js");
 
-router.get("/",wrapAsync(async(req,res)=>{
+router.get("/",isLoggedIn,wrapAsync(async(req,res)=>{
     const internships=await Internship.find({});
     const jobs=await Job.find({});
-    console.log(req.user.id);
     const student=await Student.find({studentId:req.user.id});
-    console.log(student);
-    res.render("student.ejs",{internships,jobs,student});
+    res.render("student/dashboard.ejs",{internships,jobs,student});
 }));
 
 router.get("/myapplication",isLoggedIn,wrapAsync(async(req,res)=>{

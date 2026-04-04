@@ -31,4 +31,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+    // Header Profile Dropdown toggle
+    const headerTrigger = document.getElementById('headerProfileTrigger');
+    const headerMenu = document.getElementById('headerProfileMenu');
+    
+    if (headerTrigger && headerMenu) {
+      headerTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        headerMenu.classList.toggle('show');
+      });
+      
+      document.addEventListener('click', () => {
+        headerMenu.classList.remove('show');
+      });
+    }
 });

@@ -26,7 +26,25 @@
       <a href="/login" class="btn-redesign btn-ghost-redesign">Log In</a>
       <a href="/signup" class="btn-redesign btn-primary-redesign"><i class="fas fa-user-plus"></i> Sign Up Free</a>
     <% } else { %>
-      <a href="/logout" class="btn-redesign btn-primary-redesign">Logout</a>
+      <div class="user-profile-dropdown">
+        <div class="profile-trigger" id="headerProfileTrigger">
+          <div class="profile-avatar">
+            <%= currUser.username.charAt(0).toUpperCase() %>
+          </div>
+          <span class="d-none d-md-block"><%= currUser.username %></span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="profile-menu" id="headerProfileMenu">
+          <% if(currUser.usertype === 'student') { %>
+            <a href="/student"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="/student/profile"><i class="fas fa-user-circle"></i> Profile</a>
+          <% } else { %>
+            <a href="/company"><i class="fas fa-th-large"></i> Dashboard</a>
+          <% } %>
+          <hr>
+          <a href="/logout" class="text-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
     <% } %>
     <div class="hamburger-redesign" onclick="toggleMenu()">
       <span></span><span></span><span></span>

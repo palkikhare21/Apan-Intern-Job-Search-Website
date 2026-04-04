@@ -133,6 +133,104 @@
     color: white;
     box-shadow: 0 4px 14px rgba(255,87,51,0.3);
   }
+
+  /* USER PROFILE DROPDOWN */
+  .user-profile-dropdown {
+    position: relative;
+    z-index: 1001;
+    margin-left: 10px;
+  }
+
+  .profile-trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 100px;
+    background: white;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    font-weight: 600;
+    font-size: 0.88rem;
+  }
+
+  .profile-trigger:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  .profile-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+
+  .profile-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 220px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border: 1px solid rgba(0,0,0,0.05);
+    padding: 10px 0;
+    display: none;
+    z-index: 1100;
+  }
+
+  .profile-menu.show {
+    display: block;
+    animation: slideProfileDown 0.2s ease-out;
+  }
+
+  @keyframes slideProfileDown {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .profile-menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+
+  .profile-menu a:hover {
+    background: #f8f9fa;
+    color: var(--accent);
+  }
+
+  .profile-menu i {
+    width: 18px;
+    font-size: 1rem;
+    color: var(--muted);
+  }
+
+  .profile-menu hr {
+    margin: 8px 0;
+    border: none;
+    border-top: 1px solid var(--border);
+    opacity: 0.5;
+  }
+
+  .profile-menu a.text-danger:hover {
+    background: #fff5f5;
+    color: #e74c3c;
+  }
  
   .btn-primary-redesign:hover {
     background: #e04a28;

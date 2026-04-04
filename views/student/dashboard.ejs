@@ -1,0 +1,304 @@
+<% layout("/layouts/mainboilerplate") %>
+<link rel="stylesheet" href="/css/dashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="dashboard-container">
+    <!-- SIDEBAR -->
+    <aside class="dash-sidebar">
+        <div class="dash-logo">
+            Apna<span>Intern</span>
+        </div>
+        <nav class="dash-nav">
+            <a href="/student" class="dash-nav-item active">
+                <i class="fas fa-th-large"></i> Dashboard
+            </a>
+            <a href="/student/job" class="dash-nav-item">
+                <i class="fas fa-search"></i> Search Job
+            </a>
+            <a href="/student/internship" class="dash-nav-item">
+                <i class="fas fa-graduation-cap"></i> Internships
+            </a>
+            <a href="/student/myapplication" class="dash-nav-item">
+                <i class="fas fa-briefcase"></i> Applications
+            </a>
+            <a href="/student/profile" class="dash-nav-item">
+                <i class="fas fa-user-circle"></i> My Profile
+            </a>
+            <a href="#" class="dash-nav-item">
+                <i class="fas fa-envelope"></i> Message
+            </a>
+            <a href="#" class="dash-nav-item">
+                <i class="fas fa-chart-bar"></i> Statistics
+            </a>
+        </nav>
+        <div class="dash-upgrade-card">
+            <h4>Enhance your profile visibility</h4>
+            <button class="dash-upgrade-btn">Go Premium</button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dash-main">
+        <!-- TOPBAR -->
+        <header class="dash-topbar">
+            <div class="dash-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search internships, jobs or companies...">
+            </div>
+            <div class="dash-topbar-actions">
+                <div class="topbar-icon">
+                    <i class="fas fa-bell"></i>
+                    <span class="topbar-badge">3</span>
+                </div>
+                <div class="topbar-icon">
+                    <i class="fas fa-envelope"></i>
+                    <span class="topbar-badge">5</span>
+                </div>
+                
+                <div class="dash-profile-trigger" id="profileTrigger">
+                    <div class="dash-avatar">
+                        <% if(currUser && currUser.avatar) { %>
+                            <img src="<%= currUser.avatar %>" alt="Profile">
+                        <% } else { %>
+                            <%= currUser.username.charAt(0).toUpperCase() %>
+                        <% } %>
+                    </div>
+                    <div class="dash-profile-info d-none d-md-block">
+                        <h4><%= currUser.username %></h4>
+                        <p>Student</p>
+                    </div>
+                    <i class="fas fa-chevron-down ms-2" style="font-size: 0.7rem; color: #94a3b8;"></i>
+
+                    <!-- DROPDOWN -->
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="/student/profile" class="dropdown-item">
+                            <i class="fas fa-user"></i> My Profile
+                        </a>
+                        <a href="/student/myapplication" class="dropdown-item">
+                            <i class="fas fa-file-alt"></i> My Applications
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/logout" class="dropdown-item text-danger">
+                            <i class="fas fa-sign-out-alt"></i> Sign Out
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD BODY -->
+        <div class="dash-content">
+            <div class="dash-welcome">
+                <h2>Welcome Back, <%= currUser.username %>! 👋</h2>
+                <p>Monitor your progress and stay updated with your applications.</p>
+            </div>
+
+            <!-- STATS GRID -->
+            <div class="dash-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(46, 91, 255, 0.1); color: var(--dash-primary);">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="stat-val">94</div>
+                    <div class="stat-label">Profile Viewed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(255, 87, 51, 0.1); color: var(--dash-accent);">
+                        <i class="fas fa-comment-dots"></i>
+                    </div>
+                    <div class="stat-val">261</div>
+                    <div class="stat-label">Unread Messages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(39, 174, 96, 0.1); color: #27ae60;">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="stat-val">874</div>
+                    <div class="stat-label">Application Sent</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(243, 156, 18, 0.1); color: #f39c12;">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-val">25</div>
+                    <div class="stat-label">Interviews</div>
+                </div>
+            </div>
+
+            <!-- CHARTS GRID -->
+            <div class="dash-charts-grid">
+                <!-- PROFILE STRENGTH -->
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h3>Profile Strength</h3>
+                    </div>
+                    <div class="chart-container" style="height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                        <canvas id="strengthChart"></canvas>
+                        <div style="position: absolute; text-align: center;">
+                            <span style="font-size: 1.5rem; font-weight: 700; color: var(--dash-text-main);">85%</span>
+                        </div>
+                    </div>
+                    <div class="strength-list">
+                        <div class="strength-item">
+                            <div class="strength-info">
+                                <span>Profile Viewers</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: 90%; background: #ffb347;"></div>
+                            </div>
+                        </div>
+                        <div class="strength-item">
+                            <div class="strength-info">
+                                <span>Contacted</span>
+                                <span>68%</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: 68%; background: #ff5733;"></div>
+                            </div>
+                        </div>
+                        <div class="strength-item">
+                            <div class="strength-info">
+                                <span>Follows</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-bar-fill" style="width: 85%; background: #2e5bff;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NETWORK SUMMARY -->
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <h3>Your Network Summary</h3>
+                        <div style="font-size: 0.8rem; color: var(--dash-text-muted);">
+                            <span class="me-3"><i class="fas fa-circle me-1" style="color: #ff5733;"></i> Following: 239</span>
+                            <span><i class="fas fa-circle me-1" style="color: var(--dash-text-main);"></i> Followers: 824</span>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="networkChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VACANCIES STATS -->
+            <div class="dash-card">
+                <div class="dash-card-header">
+                    <h3>Vacancies Stats</h3>
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Daily</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Weekly</button>
+                        <button type="button" class="btn btn-sm btn-primary">Monthly</button>
+                    </div>
+                </div>
+                <div class="chart-container" style="height: 300px;">
+                    <canvas id="vacancyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // PROFILE DROPDOWN
+    const trigger = document.getElementById('profileTrigger');
+    const dropdown = document.getElementById('profileDropdown');
+    
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.toggle('show');
+    });
+    
+    document.addEventListener('click', () => {
+        dropdown.classList.remove('show');
+    });
+
+    // CHARTS
+    // Profile Strength Chart
+    const strengthCtx = document.getElementById('strengthChart').getContext('2d');
+    new Chart(strengthCtx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [85, 15],
+                backgroundColor: ['#2e5bff', '#edf2f7'],
+                borderWidth: 0,
+                cutout: '80%'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { enabled: false } }
+        }
+    });
+
+    // Network Summary Chart
+    const networkCtx = document.getElementById('networkChart').getContext('2d');
+    new Chart(networkCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            datasets: [
+                {
+                    label: 'Following',
+                    data: [12000, 25000, 18000, 15000, 20000, 12000, 22000],
+                    backgroundColor: '#ff5733',
+                    borderRadius: 5,
+                    barThickness: 8
+                },
+                {
+                    label: 'Followers',
+                    data: [8000, 15000, 22000, 10000, 25000, 18000, 15000],
+                    backgroundColor: '#1a1a1a',
+                    borderRadius: 5,
+                    barThickness: 8
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { display: true, grid: { display: false }, ticks: { font: { size: 10 } } },
+                x: { grid: { display: false }, ticks: { font: { size: 10 } } }
+            }
+        }
+    });
+
+    // Vacancy Stats Chart
+    const vacancyCtx = document.getElementById('vacancyChart').getContext('2d');
+    new Chart(vacancyCtx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+            datasets: [{
+                label: 'Applications',
+                data: [30, 25, 45, 35, 55, 40, 60, 45, 70],
+                borderColor: '#27ae60',
+                backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: '#fff',
+                pointBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { grid: { color: '#f1f5f9' }, ticks: { stepSize: 20 } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
