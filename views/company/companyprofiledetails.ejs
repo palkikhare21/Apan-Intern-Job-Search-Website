@@ -1,0 +1,86 @@
+<%- layout("/layouts/mainboilerplate.ejs") %>
+
+<div class="section-redesign">
+    <div class="section-header-redesign fade-in">
+        <div>
+            <div class="section-label-redesign">Company Profile</div>
+            <h1 class="section-title-redesign"><%= company[0] ? company[0].companyName : "Unknown Company" %></h1>
+            <p class="auth-header-redesign p" style="margin-left: 0;"><%= company[0] ? company[0].typeOf : "Company Type" %></p>
+        </div>
+        <div class="nav-actions">
+            <% if(company && company.length > 0) { %>
+                <a href="/company/profile/<%= company[0]._id %>/edit" class="btn-redesign btn-ghost-redesign">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </a>
+            <% } else { %>
+                <a href="/company/details" class="btn-redesign btn-ghost-redesign">
+                    <i class="fas fa-edit"></i> Create Profile
+                </a>
+            <% } %>
+            <a href="/company" class="btn-redesign btn-primary-redesign">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    <% if(company && company.length > 0) { %>
+    <div class="row fade-in">
+        <div class="col-lg-4">
+            <!-- INFO CARD -->
+            <div class="category-card" style="padding: 32px; margin-bottom: 24px;">
+                <h3 class="section-title-redesign" style="font-size: 1.4rem; margin-bottom: 24px;">Contact Info</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 700; color: var(--ink); font-size: 0.8rem; text-transform: uppercase;">Location</div>
+                    <div style="color: var(--muted);"><%= company[0].location ? `${company[0].location.city}, ${company[0].location.state}` : "Not Provided" %>, <%= company[0].country %></div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 700; color: var(--ink); font-size: 0.8rem; text-transform: uppercase;">Contact Number</div>
+                    <div style="color: var(--muted);"><%= company[0].contactNumber || "Not Provided" %></div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="font-weight: 700; color: var(--ink); font-size: 0.8rem; text-transform: uppercase;">Website</div>
+                    <div style="color: var(--muted);">
+                        <% if(company[0].website) { %>
+                            <a href="<%= company[0].website.startsWith('http') ? company[0].website : 'https://' + company[0].website %>" target="_blank" style="color: var(--primary); text-decoration: none;"><%= company[0].website %></a>
+                        <% } else { %>
+                            Not Provided
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <!-- DETAILS PREVIEW -->
+            <div class="category-card" style="padding: 40px; min-height: 400px; display: flex; flex-direction: column;">
+                <h3 class="section-title-redesign" style="font-size: 1.6rem; margin-bottom: 20px;">About Company</h3>
+                <div style="color: var(--muted); line-height: 1.8; white-space: pre-wrap;">
+                    <%= company[0].companyDetails || "No details provided yet." %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } else { %>
+        <div class="row fade-in">
+            <div class="col-12 text-center" style="padding: 40px;">
+                <h3 style="color: var(--ink);">No Profile Created Yet</h3>
+                <p style="color: var(--muted); margin-top: 10px;">Please create your company profile to start posting jobs and internships.</p>
+                <a href="/company/details" class="btn-redesign btn-primary-redesign mt-3">Create Profile</a>
+            </div>
+        </div>
+    <% } %>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fades = document.querySelectorAll('.fade-in');
+        fades.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.add('visible');
+            }, 100 * index);
+        });
+    });
+</script>

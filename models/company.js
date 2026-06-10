@@ -22,13 +22,11 @@ const companySchema=new Schema({
     },
     website: {
         type: String,
-        required: true,
-        match: /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/
+        required: true
     },
     contactNumber: {
         type: String,
-        required: true,
-        match: /^[6-9]\d{9}$/
+        required: true
     },
     companyDetails: {
         type: String,

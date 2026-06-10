@@ -24,10 +24,10 @@
             <a href="/student/profile" class="dash-nav-item">
                 <i class="fas fa-user-circle"></i> My Profile
             </a>
-            <a href="#" class="dash-nav-item">
+            <a href="#" class="dash-nav-item" onclick="alert('Messages feature is coming soon!')">
                 <i class="fas fa-envelope"></i> Message
             </a>
-            <a href="#" class="dash-nav-item">
+            <a href="#" class="dash-nav-item" onclick="alert('Statistics feature is coming soon!')">
                 <i class="fas fa-chart-bar"></i> Statistics
             </a>
         </nav>
@@ -98,33 +98,44 @@
 
             <!-- STATS GRID -->
             <div class="dash-stats-grid">
-                <div class="stat-card">
+                <div class="stat-card" style="cursor: pointer;" onclick="toggleDetails('details-views')">
                     <div class="stat-icon" style="background: rgba(46, 91, 255, 0.1); color: var(--dash-primary);">
                         <i class="fas fa-eye"></i>
                     </div>
-                    <div class="stat-val">94</div>
-                    <div class="stat-label">Profile Viewed</div>
+                    <div class="stat-val">2</div>
+                    <div class="stat-label">Profile Viewed <i class="fas fa-chevron-down ms-1" style="font-size:0.6rem"></i></div>
+                    <div class="stat-desc" id="details-views" style="display: none; font-size: 0.75rem; color: var(--dash-text-muted); margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px;">Viewed by User 1, User 2</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="cursor: pointer;" onclick="toggleDetails('details-messages')">
                     <div class="stat-icon" style="background: rgba(255, 87, 51, 0.1); color: var(--dash-accent);">
                         <i class="fas fa-comment-dots"></i>
                     </div>
-                    <div class="stat-val">261</div>
-                    <div class="stat-label">Unread Messages</div>
+                    <div class="stat-val">1</div>
+                    <div class="stat-label">Unread Messages <i class="fas fa-chevron-down ms-1" style="font-size:0.6rem"></i></div>
+                    <div class="stat-desc" id="details-messages" style="display: none; font-size: 0.75rem; color: var(--dash-text-muted); margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px;">
+                        <strong>Tech Corp:</strong> "Looking forward to our chat!"
+                    </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="cursor: pointer;" onclick="toggleDetails('details-apps')">
                     <div class="stat-icon" style="background: rgba(39, 174, 96, 0.1); color: #27ae60;">
                         <i class="fas fa-paper-plane"></i>
                     </div>
-                    <div class="stat-val">874</div>
-                    <div class="stat-label">Application Sent</div>
+                    <div class="stat-val">2</div>
+                    <div class="stat-label">Application Sent <i class="fas fa-chevron-down ms-1" style="font-size:0.6rem"></i></div>
+                    <div class="stat-desc" id="details-apps" style="display: none; font-size: 0.75rem; color: var(--dash-text-muted); margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px;">
+                        1. Frontend Developer at Tech Corp<br>
+                        2. UX Designer at Designify
+                    </div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="cursor: pointer;" onclick="toggleDetails('details-interviews')">
                     <div class="stat-icon" style="background: rgba(243, 156, 18, 0.1); color: #f39c12;">
                         <i class="fas fa-calendar-check"></i>
                     </div>
-                    <div class="stat-val">25</div>
-                    <div class="stat-label">Interviews</div>
+                    <div class="stat-val">1</div>
+                    <div class="stat-label">Interviews <i class="fas fa-chevron-down ms-1" style="font-size:0.6rem"></i></div>
+                    <div class="stat-desc" id="details-interviews" style="display: none; font-size: 0.75rem; color: var(--dash-text-muted); margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px;">
+                        <strong>Tech Corp:</strong> Online (Zoom)<br>Tomorrow, 2:00 PM
+                    </div>
                 </div>
             </div>
 
@@ -138,35 +149,35 @@
                     <div class="chart-container" style="height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px;">
                         <canvas id="strengthChart"></canvas>
                         <div style="position: absolute; text-align: center;">
-                            <span style="font-size: 1.5rem; font-weight: 700; color: var(--dash-text-main);">85%</span>
+                            <span style="font-size: 1.5rem; font-weight: 700; color: var(--dash-text-main);">15%</span>
                         </div>
                     </div>
                     <div class="strength-list">
                         <div class="strength-item">
                             <div class="strength-info">
                                 <span>Profile Viewers</span>
-                                <span>90%</span>
+                                <span>10%</span>
                             </div>
                             <div class="progress-bar-bg">
-                                <div class="progress-bar-fill" style="width: 90%; background: #ffb347;"></div>
+                                <div class="progress-bar-fill" style="width: 10%; background: #ffb347;"></div>
                             </div>
                         </div>
                         <div class="strength-item">
                             <div class="strength-info">
                                 <span>Contacted</span>
-                                <span>68%</span>
+                                <span>5%</span>
                             </div>
                             <div class="progress-bar-bg">
-                                <div class="progress-bar-fill" style="width: 68%; background: #ff5733;"></div>
+                                <div class="progress-bar-fill" style="width: 5%; background: #ff5733;"></div>
                             </div>
                         </div>
                         <div class="strength-item">
                             <div class="strength-info">
                                 <span>Follows</span>
-                                <span>85%</span>
+                                <span>12%</span>
                             </div>
                             <div class="progress-bar-bg">
-                                <div class="progress-bar-fill" style="width: 85%; background: #2e5bff;"></div>
+                                <div class="progress-bar-fill" style="width: 12%; background: #2e5bff;"></div>
                             </div>
                         </div>
                     </div>
@@ -177,8 +188,8 @@
                     <div class="dash-card-header">
                         <h3>Your Network Summary</h3>
                         <div style="font-size: 0.8rem; color: var(--dash-text-muted);">
-                            <span class="me-3"><i class="fas fa-circle me-1" style="color: #ff5733;"></i> Following: 239</span>
-                            <span><i class="fas fa-circle me-1" style="color: var(--dash-text-main);"></i> Followers: 824</span>
+                            <span class="me-3"><i class="fas fa-circle me-1" style="color: #ff5733;"></i> Following: 5</span>
+                            <span><i class="fas fa-circle me-1" style="color: var(--dash-text-main);"></i> Followers: 2</span>
                         </div>
                     </div>
                     <div class="chart-container">
@@ -205,13 +216,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% if (internships && internships.length > 0) { %>
-                                <% internships.slice(0, 5).forEach(intern => { %>
+                            <% if (applications && applications.length > 0) { %>
+                                <% applications.forEach((app, idx) => { %>
+                                    <% let role = app.jobId ? app.jobId.title : (app.internshipId ? app.internshipId.title : 'Unknown'); %>
+                                    <% let comp = companies[idx] ? companies[idx].companyName : 'Unknown Company'; %>
                                     <tr>
-                                        <td class="fw-bold"><%= intern.title %></td>
-                                        <td>ApnaPartner</td>
-                                        <td><%= new Date().toLocaleDateString() %></td>
-                                        <td><span class="status-badge status-pending">Applied</span></td>
+                                        <td class="fw-bold"><%= role %></td>
+                                        <td><%= comp %></td>
+                                        <td><%= new Date(app.appliedAt).toLocaleDateString() %></td>
+                                        <td>
+                                            <% if(app.Status === 'pending') { %>
+                                                <span class="status-badge status-pending">Applied</span>
+                                            <% } else if(app.Status === 'accepted') { %>
+                                                <span class="status-badge status-hired">Shortlisted</span>
+                                            <% } else if(app.Status === 'hired') { %>
+                                                <span class="status-badge status-hired">Hired</span>
+                                            <% } else { %>
+                                                <span class="status-badge status-rejected">Rejected</span>
+                                            <% } %>
+                                        </td>
                                         <td class="text-end">
                                             <a href="#" class="btn btn-sm btn-outline-primary shadow-sm"><i class="fas fa-info-circle me-1"></i> Details</a>
                                         </td>
@@ -253,6 +276,28 @@
         dropdown.classList.remove('show');
     });
 
+    // TOPBAR ICONS
+    const topbarIcons = document.querySelectorAll('.topbar-icon');
+    topbarIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+            const badge = icon.querySelector('.topbar-badge');
+            if (badge) {
+                badge.innerText = '0';
+                badge.style.display = 'none';
+            }
+        });
+    });
+
+    // STAT CARDS TOGGLE
+    function toggleDetails(id) {
+        const details = document.getElementById(id);
+        if (details.style.display === 'none') {
+            details.style.display = 'block';
+        } else {
+            details.style.display = 'none';
+        }
+    }
+
     // CHARTS
     // Profile Strength Chart
     const strengthCtx = document.getElementById('strengthChart').getContext('2d');
@@ -260,7 +305,7 @@
         type: 'doughnut',
         data: {
             datasets: [{
-                data: [85, 15],
+                data: [15, 85],
                 backgroundColor: ['#2e5bff', '#edf2f7'],
                 borderWidth: 0,
                 cutout: '80%'
@@ -282,14 +327,14 @@
             datasets: [
                 {
                     label: 'Following',
-                    data: [12000, 25000, 18000, 15000, 20000, 12000, 22000],
+                    data: [0, 1, 0, 2, 0, 1, 1],
                     backgroundColor: '#ff5733',
                     borderRadius: 5,
                     barThickness: 8
                 },
                 {
                     label: 'Followers',
-                    data: [8000, 15000, 22000, 10000, 25000, 18000, 15000],
+                    data: [0, 0, 1, 0, 0, 1, 0],
                     backgroundColor: '#1a1a1a',
                     borderRadius: 5,
                     barThickness: 8

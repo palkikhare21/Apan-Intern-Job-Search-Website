@@ -13,11 +13,11 @@ router.get("/",isLoggedIn,wrapAsync(async(req,res)=>{
     let list = await Promise.all(
     internships.map(async (e) => {
         let companyid = e.owner;
-        return await Company.find({companyId:companyid});
+        let company = await Company.findOne({companyId:companyid});
+        return company || { companyname: 'Unknown Company' };
     }));
-    list = list.flat();
     console.log(internships.length);
-    res.render("forstudent/internindex.ejs",{internships,list});
+    res.render("student/internindex.ejs",{internships,list});
 }));
 
 // internship details 
@@ -27,7 +27,7 @@ router.get("/:id",isLoggedIn,wrapAsync(async(req,res)=>{
     let companyid = internship.owner;
     let company=Company.find({companyId:companyid});
     let applied=await Application.find({userId:req.user._id,internshipId:id});
-    res.render("forstudent/internshow.ejs",{internship,company,applied});
+    res.render("student/internshow.ejs",{internship,company,applied});
 }));
 
 //internship apply

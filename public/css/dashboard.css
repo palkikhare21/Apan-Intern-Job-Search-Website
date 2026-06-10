@@ -362,5 +362,9 @@
 @media (max-width: 1024px) {
   .dash-sidebar { transform: translateX(-100%); }
   .dash-main { margin-left: 0; }
-  .dash-charts-grid { grid-template-columns: 1fr; }
+}
+
+/* HIDE MAIN FOOTER ON DASHBOARD */
+.footer-redesign {
+  display: none !important;
 }

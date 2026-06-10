@@ -24,7 +24,8 @@ app.use(express.urlencoded({extended:true}));
 app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(methodOverride("_method"));
-
+const dotenv=require("dotenv");
+dotenv.config();
 
 const dbUrl = process.env.STORAGE_URL || process.env.MONGODB_URI || process.env.ATLAS_URL || "mongodb://127.0.0.1:27017/apnaintern";
 

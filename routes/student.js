@@ -12,7 +12,24 @@ router.get("/",isLoggedIn,wrapAsync(async(req,res)=>{
     const internships=await Internship.find({});
     const jobs=await Job.find({});
     const student=await Student.find({studentId:req.user.id});
-    res.render("student/dashboard.ejs",{internships,jobs,student});
+    
+    const applications = await Application.find({userId: req.user._id})
+        .populate('jobId')
+        .populate('internshipId')
+        .sort({ appliedAt: -1 })
+        .limit(5);
+
+    let companies = [];
+    for (let app of applications) {
+        let ownerId = app.internshipId ? app.internshipId.owner : (app.jobId ? app.jobId.owner : null);
+        let company = null;
+        if(ownerId) {
+            company = await Company.findOne({companyId: ownerId});
+        }
+        companies.push(company);
+    }
+    
+    res.render("student/dashboard.ejs",{internships,jobs,student, applications, companies});
 }));
 
 router.get("/myapplication",isLoggedIn,wrapAsync(async(req,res)=>{
@@ -21,9 +38,11 @@ router.get("/myapplication",isLoggedIn,wrapAsync(async(req,res)=>{
     let requestlist = await Promise.all(
     applications.map(async (e) => {
             if(e.internshipId){
-                return await Internship.findById(e.internshipId);
+                let intern = await Internship.findById(e.internshipId);
+                return intern || { title: 'Deleted Internship' };
             }else{
-                return await Job.findById(e.jobId);
+                let job = await Job.findById(e.jobId);
+                return job || { title: 'Deleted Job' };
             }
     }));
     let internjobCompanylist = await Promise.all(
@@ -31,17 +50,16 @@ router.get("/myapplication",isLoggedIn,wrapAsync(async(req,res)=>{
             let companyid;
             if(e.internshipId){
                 let internship=await Internship.findById(e.internshipId);
-                companyid=internship.owner;
+                companyid = internship ? internship.owner : null;
             }else{
                 let job=await Job.findById(e.jobId);
-                companyid=job.owner;
+                companyid = job ? job.owner : null;
             }
-           let company =await Company.find({companyId:companyid});
-           return company;
+           if (!companyid) return { companyname: 'Unknown Company' };
+           let company = await Company.findOne({companyId:companyid});
+           return company || { companyname: 'Unknown Company' };
        }));
-    internjobCompanylist = internjobCompanylist.flat();
-    requestlist=requestlist.flat();
-    res.render("forstudent/application.ejs",{applications,requestlist,internjobCompanylist});
+    res.render("student/application.ejs",{applications,requestlist,internjobCompanylist});
 }));
 
 

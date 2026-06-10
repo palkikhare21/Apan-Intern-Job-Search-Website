@@ -12,11 +12,10 @@ router.get("/",isLoggedIn,savedbackpath,wrapAsync(async(req,res)=>{
     let list = await Promise.all(
     jobs.map(async (e) => {
         let companyid = e.owner;
-        let company =await Company.find({companyId:companyid});
-        return company;
+        let company = await Company.findOne({companyId:companyid});
+        return company || { companyname: 'Unknown Company' };
     }));
-    list = list.flat();
-    res.render("forstudent/jobindex.ejs",{jobs,list});
+    res.render("student/jobindex.ejs",{jobs,list});
 }));
 
 //job details
@@ -27,7 +26,7 @@ router.get("/:id",isLoggedIn,saveredirectUrl,wrapAsync(async(req,res)=>{
     let company =await Company.find({companyId:companyid});
     let applied=await Application.find({userId:req.user._id,jobId:id});
     let path=res.locals.redirect;
-    res.render("forstudent/jobshow.ejs",{job,company,applied,path});
+    res.render("student/jobshow.ejs",{job,company,applied,path});
 }));
 
 
