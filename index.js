@@ -114,6 +114,10 @@ mongoose.connection.on("error", (err) => {
 app.use(async (req, res, next) => {
     try {
         await clientPromise;
+        if (mongoose.connection.readyState !== 1) {
+            console.log("Mongoose reconnecting due to severed connection...");
+            await mongoose.connect(dbUrl, { serverSelectionTimeoutMS: 5000 });
+        }
         next();
     } catch (err) {
         console.error("DB wait middleware error:", err);
