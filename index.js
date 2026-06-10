@@ -110,6 +110,16 @@ mongoose.connection.on("error", (err) => {
     console.error("Mongoose connection heart-beat error:", err);
 });
 
+// Middleware to ensure DB connection is ready before handling ANY request
+app.use(async (req, res, next) => {
+    try {
+        await clientPromise;
+        next();
+    } catch (err) {
+        console.error("DB wait middleware error:", err);
+        next(new expressError(500, "Database connection failed"));
+    }
+});
 
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
@@ -122,11 +132,6 @@ app.use((req,res,next)=>{
 
 app.get("/", async (req, res) => {
     try {
-        // Only attempt to find if the connection is ready (state 1 is connected)
-        if (mongoose.connection.readyState !== 1) {
-            console.warn("Attempting query while DB is not ready. State:", mongoose.connection.readyState);
-            return res.render("home.ejs", { internships: [], jobs: [] });
-        }
         const internships = await Internship.find({}).limit(6);
         const jobs = await Job.find({}).limit(6);
         res.render("home.ejs", { internships, jobs });
