@@ -49,7 +49,7 @@ const intershipSchema=new Schema({
     },
 });
 
-const Internship=mongoose.model("internship",intershipSchema);
+const Internship=mongoose.model("Internship",intershipSchema);
 
 
 module.exports=Internship;
