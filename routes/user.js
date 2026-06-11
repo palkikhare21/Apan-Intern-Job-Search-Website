@@ -33,7 +33,7 @@ router.post("/signup",wrapAsync(async(req,res,next)=>{
 router.get("/login",(req,res)=>{
     res.render("login.ejs");
 });
-router.post("/login",saveredirectUrl,passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),wrapAsync(async(req,res)=>{
+router.post("/login",saveredirectUrl,passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),wrapAsync(async(req,res,next)=>{
     req.flash("success","Welcome to ApnaIntern!");
     req.session.save((err) => {
         if(err) return next(err);

@@ -56,6 +56,7 @@ module.exports.isapplied=async(req,res,next)=>{
 
 
 
-module.exports.savedbackpath=(req,res)=>{
+module.exports.savedbackpath=(req,res,next)=>{
     req.session.redirectUrl=req.originalUrl;
+    next();
 };
